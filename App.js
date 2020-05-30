@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableHighlight,
+} from 'react-native';
 import Cita from './src/components/Cita';
 import Form from './src/components/Form';
 
@@ -9,6 +15,7 @@ const App = () => {
     { id: '2', paciente: 'Redux', propietario: 'Itzel', sintomas: 'No duerme'},
     { id: '3', paciente: 'Native', propietario: 'Josue', sintomas: 'No canta'}
   ]);
+  const [mostrarForm, guardarMostrarForm] = useState(false);
 
   const eliminarPaciente = id => {
     setCitas(citasActuales => {
@@ -16,23 +23,44 @@ const App = () => {
     });
   };
 
+  const mostrarFormulario = () => {
+    guardarMostrarForm(!mostrarForm);
+  };
+
   return (
-    <ScrollView>
+    <>
       <View style={styles.contenedor}>
         <Text style={styles.titulo}>Administrador de citas</Text>
-        <Form />
-        <Text style={styles.titulo}>
-          {citas.length ? 'Administra tus citas' : 'no hay citas, agrega una'}
-        </Text>
-        <FlatList
-          data={citas}
-          renderItem={({ item }) => (
-            <Cita cita={item} eliminarPaciente={eliminarPaciente} />
+        <View>
+          <TouchableHighlight onPress={mostrarFormulario} style={styles.btnMostrarForm}>
+            <Text style={styles.textoMostarForm}>Crear Nueva Cita</Text>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.contenido}>
+          {mostrarForm ? (
+            <>
+              <Text style={styles.titulo}>Crear nueva cita</Text>
+              <Form />
+            </>
+          ) : (
+            <>
+              <Text style={styles.titulo}>
+                {citas.length
+                  ? 'Administra tus citas'
+                  : 'no hay citas, agrega una'}
+              </Text>
+              <FlatList
+                data={citas}
+                renderItem={({ item }) => (
+                  <Cita cita={item} eliminarPaciente={eliminarPaciente} />
+                )}
+                keyExtractor={cita => cita.id}
+              />
+            </>
           )}
-          keyExtractor={cita => cita.id}
-        />
+        </View>
       </View>
-    </ScrollView>
+    </>
   );
 };
 
@@ -41,6 +69,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#AA076B',
     flex: 1,
   },
+  contenido: {
+    flex: 1,
+    marginHorizontal: '2.5%',
+  },
   titulo: {
     textAlign: 'center',
     marginTop: 40,
@@ -48,6 +80,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 24,
     color: '#FFF',
+  },
+  btnMostrarForm: {
+    padding: 10,
+    backgroundColor: '#7d024e',
+    marginVertical: 10,
+  },
+  textoMostarForm: {
+    color: '#FFF',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

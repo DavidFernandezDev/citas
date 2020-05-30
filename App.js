@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, ScrollView } from 'react-native';
 import Cita from './src/components/Cita';
+import Form from './src/components/Form';
 
 const App = () => {
   const [citas, setCitas] = useState([
@@ -16,9 +17,10 @@ const App = () => {
   };
 
   return (
-    <>
+    <ScrollView>
       <View style={styles.contenedor}>
         <Text style={styles.titulo}>Administrador de citas</Text>
+        <Form />
         <Text style={styles.titulo}>
           {citas.length ? 'Administra tus citas' : 'no hay citas, agrega una'}
         </Text>
@@ -30,7 +32,7 @@ const App = () => {
           keyExtractor={cita => cita.id}
         />
       </View>
-    </>
+    </ScrollView>
   );
 };
 

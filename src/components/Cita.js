@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 
 const Cita = ({ cita, eliminarPaciente }) => {
-
   const dialogoEliminar = id => {
     console.log('eliminando...');
     eliminarPaciente(id);

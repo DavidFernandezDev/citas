@@ -10,16 +10,10 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import shortid from 'shortid';
 
-
-const Form = () => {
-  const inputs = [
-    { label: 'Paciente:', onChange: guardarPaciente },
-    { label: 'Dueño:', onChange: guardarPropietario },
-    { label: 'Teléfono Contacto:', onChange: guardarTelefono },
-    { label: 'Síntomas:', onChange: guardarSintomas },
-  ];
+const Form = ({ citas, setCitas, guardarMostrarForm }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [fecha, guardarFecha] = useState('');
@@ -28,6 +22,13 @@ const Form = () => {
   const [propietario, guardarPropietario] = useState('');
   const [telefono, guardarTelefono] = useState('');
   const [sintomas, guardarSintomas] = useState('');
+
+  const inputs = [
+    { label: 'Paciente:', onChange: guardarPaciente },
+    { label: 'Dueño:', onChange: guardarPropietario },
+    { label: 'Teléfono Contacto:', onChange: guardarTelefono },
+    { label: 'Síntomas:', onChange: guardarSintomas },
+  ];
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -68,6 +69,23 @@ const Form = () => {
     ) {
       mostrarAlerta();
     }
+
+    const cita = {
+      id: shortid.generate(),
+      paciente,
+      propietario,
+      telefono,
+      fecha,
+      hora,
+      sintomas,
+    };
+
+    //adding new appointment to state
+    const citasNuevo = [...citas, cita];
+    setCitas(citasNuevo);
+
+    //hide form
+    guardarMostrarForm(false);
   };
 
   //show alert if form validates fails

@@ -7,6 +7,7 @@ import {
   FlatList,
   Button,
   TouchableHighlight,
+  Alert,
 } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
@@ -20,12 +21,12 @@ const Form = () => {
   ];
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-  const [fecha, guardarFecha] = useState();
-  const [hora, guardarHora] = useState();
-  const [paciente, guardarPaciente] = useState();
-  const [propietario, guardarPropietario] = useState();
-  const [telefono, guardarTelefono] = useState();
-  const [sintomas, guardarSintomas] = useState();
+  const [fecha, guardarFecha] = useState('');
+  const [hora, guardarHora] = useState('');
+  const [paciente, guardarPaciente] = useState('');
+  const [propietario, guardarPropietario] = useState('');
+  const [telefono, guardarTelefono] = useState('');
+  const [sintomas, guardarSintomas] = useState('');
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -54,6 +55,28 @@ const Form = () => {
     guardarHora(hora.toLocaleString('en-US', opciones));
     hideTimePicker();
   };
+
+  const crearNuevaCita = () => {
+    if (
+      (paciente.trim() ||
+        propietario.trim() ||
+        telefono.trim() ||
+        fecha.trim() ||
+        hora.trim() ||
+        sintomas.trim()) === ''
+    ) {
+      mostrarAlerta();
+    }
+  };
+
+  //show alert if form validates fails
+  const mostrarAlerta = () => {
+    Alert.alert(
+      'Error', // Title
+      'Todos los campos son obligatorios', // Message
+      [{ text: 'OK' }], // Arreglo de botones
+    )
+  }
 
   return (
     <>
@@ -101,9 +124,7 @@ const Form = () => {
           <Text>{hora}</Text>
         </View>
         <View>
-          <TouchableHighlight
-            onPress={() => console.log('submit...')}
-            style={styles.btnSubmit}>
+          <TouchableHighlight onPress={crearNuevaCita} style={styles.btnSubmit}>
             <Text style={styles.textoSubmit}>Crear Nueva Cita</Text>
           </TouchableHighlight>
         </View>

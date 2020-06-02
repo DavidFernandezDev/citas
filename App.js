@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Cita from './src/components/Cita';
 import Form from './src/components/Form';
+import asyncStorage from '@react-native-community/async-storage';
 
 const App = () => {
   const [citas, setCitas] = useState([
@@ -31,6 +32,15 @@ const App = () => {
   //hide keyboard
   const ocultarTeclado = () => {
     Keyboard.dismiss();
+  };
+
+  //save appointments on async storage
+  const guradarCitas = async citasJSON => {
+    try {
+      await asyncStorage.setItem('citas', citasJSON);
+    } catch (error) {
+      console.log('error');
+    }
   };
 
   return (

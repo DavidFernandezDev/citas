@@ -13,7 +13,7 @@ import {
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import shortid from 'shortid';
 
-const Form = ({ citas, setCitas, guardarMostrarForm }) => {
+const Form = ({ citas, setCitas, guardarMostrarForm, guardarCitas }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [fecha, guardarFecha] = useState('');
@@ -83,6 +83,9 @@ const Form = ({ citas, setCitas, guardarMostrarForm }) => {
     //adding new appointment to state
     const citasNuevo = [...citas, cita];
     setCitas(citasNuevo);
+
+    //save appointments
+    guardarCitas(JSON.stringify(citasNuevo));
 
     //hide form
     guardarMostrarForm(false);

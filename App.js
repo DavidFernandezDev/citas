@@ -4,7 +4,8 @@ import {
   Text,
   View,
   FlatList,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import Cita from './src/components/Cita';
 import Form from './src/components/Form';
@@ -27,14 +28,21 @@ const App = () => {
     guardarMostrarForm(!mostrarForm);
   };
 
+  //hide keyboard
+  const ocultarTeclado = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <>
+    <TouchableWithoutFeedback onPress={ocultarTeclado}>
       <View style={styles.contenedor}>
         <Text style={styles.titulo}>Administrador de citas</Text>
         <View>
-          <TouchableHighlight onPress={mostrarFormulario} style={styles.btnMostrarForm}>
-            <Text style={styles.textoMostarForm}>Crear Nueva Cita</Text>
-          </TouchableHighlight>
+          <TouchableWithoutFeedback onPress={mostrarFormulario} style={styles.btnMostrarForm}>
+            <Text style={styles.textoMostarForm}>
+              {mostrarForm ? 'Ocultar formulario' : 'Crear Nueva Cita'}
+            </Text>
+          </TouchableWithoutFeedback>
         </View>
         <View style={styles.contenido}>
           {mostrarForm ? (
@@ -64,7 +72,7 @@ const App = () => {
           )}
         </View>
       </View>
-    </>
+    </TouchableWithoutFeedback>
   );
 };
 

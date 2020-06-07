@@ -84,7 +84,7 @@ const Form = ({ citas, setCitas, guardarMostrarForm, guardarCitas }) => {
     const citasNuevo = [...citas, cita];
     setCitas(citasNuevo);
 
-    //save appointments
+    //save appointments on storage
     guardarCitas(JSON.stringify(citasNuevo));
 
     //hide form

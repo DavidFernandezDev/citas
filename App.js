@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,19 +10,32 @@ import {
 import Cita from './src/components/Cita';
 import Form from './src/components/Form';
 import asyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const App = () => {
-  const [citas, setCitas] = useState([
-    { id: '1', paciente: 'Hook', propietario: 'Joan', sintomas: 'No come'},
-    { id: '2', paciente: 'Redux', propietario: 'Itzel', sintomas: 'No duerme'},
-    { id: '3', paciente: 'Native', propietario: 'Josue', sintomas: 'No canta'}
-  ]);
+  const [citas, setCitas] = useState([]);
   const [mostrarForm, guardarMostrarForm] = useState(false);
 
+  useEffect(() => {
+    const obtenerCitasStorage = async () => {
+      try {
+        const citasStorage = await AsyncStorage.getItem('citas');
+        console.log(citasStorage);
+
+        if (citasStorage) {
+          setCitas(JSON.parse(citasStorage));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    obtenerCitasStorage();
+  }, []);
+
   const eliminarPaciente = id => {
-    setCitas(citasActuales => {
-      return citasActuales.filter(cita => cita.id !== id);
-    });
+    const citasFiltradas = citas.filter(cita => cita.id !== id);
+    setCitas(citasFiltradas);
+    guardarCitas(JSON.stringify(citasFiltradas));
   };
 
   const mostrarFormulario = () => {
@@ -35,7 +48,7 @@ const App = () => {
   };
 
   //save appointments on async storage
-  const guradarCitas = async citasJSON => {
+  const guardarCitas = async citasJSON => {
     try {
       await asyncStorage.setItem('citas', citasJSON);
     } catch (error) {
@@ -62,6 +75,7 @@ const App = () => {
                 citas={citas}
                 setCitas={setCitas}
                 guardarMostrarForm={guardarMostrarForm}
+                guardarCitas={guardarCitas}
               />
             </>
           ) : (
